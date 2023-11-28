@@ -1,6 +1,93 @@
+<!DOCTYPE html>
+<html lang ="en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FlixTrix Documentation</title>
+    </head>
+    <body>
+        <h1>The name of this API is FlixTrix.</h1>
 
-     <h1>The name of this API is FlixTrix.</h1>
+        <p>Users will be able to create/delete an account in which they'll be able to access information about movies, directors, genres, etc. as it pertains to the film world. </p>
 
-    <p>You'll make an acccount which will give you access to film information such as movies, genres, actors, directors, etc.
-        You'll be able to update your user information, which may include creating and editing lists of favorite films, actors, directors, genres etc.
-        Finally it will allow users the opportunity to deregister their account. </p>
+        <h3>Here are some examples of the types of HTTP requests you could make with their corresponding URL endpoints</h3>
+
+        <table>
+            <tr>
+                <th>Business Logic</th>
+                <th>URL</th>
+                <th>HTTP</th>
+                <th>Request Body Format</th>
+                <th>Response Body Format</th>
+            </tr>
+            <tr>
+                <td>Return all Movies</td>
+                    <td>/movies</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding all of the movies</td>
+            </tr>
+            <tr>
+                <td>Return data about a single movie by title</td>
+                    <td>/movies/:title</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding all of the data concerning a single movie (Title, Director)</td>
+            </tr>
+            <tr>
+                <td>Return a description of a genre by name (i.e. Horror)</td>
+                    <td>/movies/genres/:genreName</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding the description of a particular genre</td>
+            </tr>
+            <tr>
+                <td>Return information about a Director by name</td>
+                    <td>/movies/directors/:directorName</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding data about a particular director (Bio, D.O.B., Filmography)</td>
+            </tr>
+            <tr>
+                <td>Allow new users to register an account</td>
+                    <td>/users</td>
+                    <td>POST</td>
+                    <td>A JSON object containing the new User information Example: <br> `{"Name": "John Doe", "Favorite Movies": []}`</td>
+                    <td>A JSON object reflecting the new User input, and also including a user ID</td>
+            </tr>
+            <tr>
+                <td>Allow users to update their account info (username)</td>
+                    <td>/users/:id</td>
+                    <td>PUT</td>
+                    <td>A JSON object containing the updated parameters Example: <br> `{"Name": "New John Doe", "Favorite Movies": []}`</td>
+                    <td>A JSON object reflecting the updated User parameters </td>
+            </tr>
+            <tr>
+                <td>Allow users to add a movie to their favortites list</td>
+                    <td>/users/:id/:movieTitle</td>
+                    <td>POST</td>
+                    <td>None</td>
+                    <td>A text message indicating that the movie has been added to the favorites list</td>
+            </tr>
+            <tr>
+                <td>Allow users to remove a movie from their favorites list</td>
+                    <td>/users/:id/:movieTitle</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A text message indicating that the movie has been removed from the favorites list</td>
+            </tr>
+            <tr>
+                <td>Allow existing users to deregister their acocunt</td>
+                    <td>/users/:id</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A text message indicating that the user's account information has been removed</td>
+            </tr>
+        </table>
+    </body>
+
+</html>
+
+
+
+    

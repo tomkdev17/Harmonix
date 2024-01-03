@@ -3,12 +3,12 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FlixTrix Documentation</title>
+        <title>Harmonicks Documentation</title>
     </head>
     <body>
-        <h1>The name of this API is FlixTrix.</h1>
+        <h1>The name of this API is Harmonicks.</h1>
 
-        <p>Users will be able to create/delete an account in which they'll be able to access information about movies, directors, genres, etc. as it pertains to the film world. </p>
+        <p>Users will be able to create/delete an account in which they'll be able to access information about music, such as songs, artist, and genres </p>
 
         <h3>Here are some examples of the types of HTTP requests you could make with their corresponding URL endpoints</h3>
 
@@ -21,63 +21,69 @@
                 <th>Response Body Format</th>
             </tr>
             <tr>
-                <td>Return all Movies</td>
-                    <td>/movies</td>
+                <td>Return all Songs</td>
+                    <td>/songs</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>A JSON object holding all of the movies</td>
+                    <td>A JSON object holding all songs</td>
             </tr>
             <tr>
-                <td>Return data about a single movie by title</td>
-                    <td>/movies/:title</td>
+                <td>Return data about a single song by title</td>
+                    <td>/songs/:title</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>A JSON object holding all of the data concerning a single movie (Title, Director)</td>
+                    <td>A JSON object holding all of the data concerning a single song (title, artist, genre, release)</td>
             </tr>
             <tr>
-                <td>Return a description of a genre by name (i.e. Horror)</td>
-                    <td>/movies/genres/:genreName</td>
+                <td>Return a description of a genre by name (i.e. Jazz)</td>
+                    <td>/songs/genres/:genreName</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding the description of a particular genre</td>
             </tr>
             <tr>
-                <td>Return information about a Director by name</td>
-                    <td>/movies/directors/:directorName</td>
+                <td>Return information about an artist by name</td>
+                    <td>/songs/artists/:artistName</td>
                     <td>GET</td>
                     <td>None</td>
-                    <td>A JSON object holding data about a particular director (Bio, D.O.B., Filmography)</td>
+                    <td>A JSON object holding data about a particular artist (artist bio, discography etc.)</td>
             </tr>
             <tr>
                 <td>Allow new users to register an account</td>
                     <td>/users</td>
                     <td>POST</td>
-                    <td>A JSON object containing the new User information Example: <br> `{"Name": "John Doe", "Favorite Movies": []}`</td>
+                    <td>A JSON object containing the new User information Example: <br> `{"Name": "John Doe", "Favorite Songs": []}`</td>
                     <td>A JSON object reflecting the new User input, and also including a user ID</td>
             </tr>
             <tr>
                 <td>Allow users to update their account info (username)</td>
                     <td>/users/:id</td>
                     <td>PUT</td>
-                    <td>A JSON object containing the updated parameters Example: <br> `{"Name": "New John Doe", "Favorite Movies": []}`</td>
-                    <td>A JSON object reflecting the updated User parameters </td>
+                    <td>A JSON object containing the updated parameters Example: <br> `{
+                        "Username": "testuser",
+                        "Password": "testpassword123",
+                        "Email": "testuser@example.com",
+                        "Birthday": "1995-01-01",
+                        "Favorites": []
+                      }`</td>
+                    <td>A JSON object reflecting the updated User data </td>
             </tr>
             <tr>
-                <td>Allow users to add a movie to their favortites list</td>
-                    <td>/users/:id/:movieTitle</td>
+                <td>Allow users to add a song to their favorites list</td>
+                    <td>/users/:id/:songTitle</td>
                     <td>POST</td>
                     <td>None</td>
-                    <td>A text message indicating that the movie has been added to the favorites list</td>
+                    <td>A text message indicating that the song has been added to the favorites list</td>
             </tr>
             <tr>
-                <td>Allow users to remove a movie from their favorites list</td>
-                    <td>/users/:id/:movieTitle</td>
+                <td>Allow users to remove a song from their favorites list</td>
+                    <td>/users/:id/:songTitle</td>
                     <td>DELETE</td>
                     <td>None</td>
-                    <td>A text message indicating that the movie has been removed from the favorites list</td>
+                    <td>A text message indicating that the song has been removed from the favorites list</td>
             </tr>
             <tr>
-                <td>Allow existing users to deregister their acocunt</td>
+                <td>Allow existing users to deregister their account</td>
                     <td>/users/:id</td>
                     <td>DELETE</td>
                     <td>None</td>

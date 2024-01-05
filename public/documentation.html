@@ -3,15 +3,18 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type = "text/css" href = "docstyles.css"/>
         <title>Harmonicks Documentation</title>
     </head>
     <body>
-        <h1>The name of this API is Harmonicks.</h1>
+        <div class='intro'>
+            <h1>The name of this API is Harmonicks.</h1>
 
-        <p>Users will be able to create/delete an account in which they'll be able to access information about music, such as songs, artist, and genres </p>
-
+            <h4>Harmonicks is a small music database with a big potential. Users can access the database to find out all about their favorite songs, artists, genres, release dates, and more! With a favorites list built into every User account, the User can simply add a song to their list in order to find it quickly again.  </h4>
+        </div>
+        
         <h3>Here are some examples of the types of HTTP requests you could make with their corresponding URL endpoints</h3>
-
+        
         <table>
             <tr>
                 <th>Business Logic</th>
@@ -29,7 +32,7 @@
             </tr>
             <tr>
                 <td>Return data about a single song by title</td>
-                    <td>/songs/:title</td>
+                    <td>/songs/:Title</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding all of the data concerning a single song (title, artist, genre, release)</td>
@@ -52,39 +55,52 @@
                 <td>Allow new users to register an account</td>
                     <td>/users</td>
                     <td>POST</td>
-                    <td>A JSON object containing the new User information Example: <br> `{"Name": "John Doe", "Favorite Songs": []}`</td>
+                    <td>A JSON object containing the new User information Example: <br>
+                        <div class='jsoncode'>
+                            `{<br>  
+                                'Username': 'John Doe' (required),<br>
+                                'Password':'password' (required),<br>
+                                'Email': 'email@123' (required),<br>
+                                'Birthday': '1990-01-01',<br>
+                                'Favorites:' []<br>
+                            }`
+                        </div>
+                    </td>
                     <td>A JSON object reflecting the new User input, and also including a user ID</td>
             </tr>
             <tr>
                 <td>Allow users to update their account info (username)</td>
-                    <td>/users/:id</td>
+                    <td>/users/:Username</td>
                     <td>PUT</td>
-                    <td>A JSON object containing the updated parameters Example: <br> `{
-                        "Username": "testuser",
-                        "Password": "testpassword123",
-                        "Email": "testuser@example.com",
-                        "Birthday": "1995-01-01",
-                        "Favorites": []
-                      }`</td>
+                    <td>A JSON object containing the updated parameters Example: <br> 
+                        <div class='jsoncode'>
+                            `{<br>
+                                "Username": "testuser",<br>
+                                "Password": "testpassword123",<br>
+                                "Email": "testuser@example.com",<br>
+                                "Birthday": "1995-01-01",<br>
+                            }`
+                        </div>
+                    </td>
                     <td>A JSON object reflecting the updated User data </td>
             </tr>
             <tr>
                 <td>Allow users to add a song to their favorites list</td>
-                    <td>/users/:id/:songTitle</td>
+                    <td>/users/:Username/songs/:SongID</td>
                     <td>POST</td>
                     <td>None</td>
-                    <td>A text message indicating that the song has been added to the favorites list</td>
+                    <td>A JSON object showing the updated Favorites list</td>
             </tr>
             <tr>
                 <td>Allow users to remove a song from their favorites list</td>
-                    <td>/users/:id/:songTitle</td>
+                    <td>/users/:Username/songs/:SongID</td>
                     <td>DELETE</td>
                     <td>None</td>
-                    <td>A text message indicating that the song has been removed from the favorites list</td>
+                    <td>A JSON object showing the updated favorites list</td>
             </tr>
             <tr>
                 <td>Allow existing users to deregister their account</td>
-                    <td>/users/:id</td>
+                    <td>/users/:Username</td>
                     <td>DELETE</td>
                     <td>None</td>
                     <td>A text message indicating that the user's account information has been removed</td>

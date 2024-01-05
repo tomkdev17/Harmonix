@@ -1,0 +1,29 @@
+body {
+    padding:100px;
+}
+
+.intro{
+    text-align: center;
+    padding:75px;
+}
+
+h3 {
+    text-align: center;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+tr, td {
+    border: 1px solid;
+    text-align: center;
+    padding: 10px;
+}
+
+.jsoncode {
+    text-align: left;
+}

@@ -19,14 +19,17 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(express.json());
-app.use(express.urlencoded ({extended: true}));
+app.use(bodyParser.urlencoded ({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('combined', {stream: accessLogStream}));
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 const jsonParse = bodyParser.json() 
 
 //Get all Users
-app.get('/users', async (req, res) => {
+app.get('/users', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Users.find()
         .then((users) => {
             res.status(200).json(users);
@@ -38,7 +41,7 @@ app.get('/users', async (req, res) => {
 });
 
 //Get USER by Name
-app.get('/users/:Username', async (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', {session:false}), async (req, res) => {
     await Users.findOne({Username: req.params.Username})
         .then((user) => {
             res.json(user);
@@ -50,7 +53,7 @@ app.get('/users/:Username', async (req, res) => {
 });
 
 //Get ALL SONGS
-app.get('/songs', async (req, res) => {
+app.get('/songs', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Songs.find()
         .then((songs) => {
             res.status(200).json(songs);
@@ -62,7 +65,7 @@ app.get('/songs', async (req, res) => {
 });
 
 //Get SONG by title
-app.get('/songs/:Title', async (req, res) => {
+app.get('/songs/:Title', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Songs.findOne({Title: req.params.Title})
         .then((song) => {
             res.status(200).json(song);
@@ -74,7 +77,7 @@ app.get('/songs/:Title', async (req, res) => {
 });
 
 //Get GENRE by title
-app.get('/songs/genre/:genreName', async (req, res) => {
+app.get('/songs/genre/:genreName', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Songs.findOne({ 'Genre.Name': req.params.genreName})
         .then((song) => {
             res.status(200).json(song.Genre);
@@ -86,7 +89,7 @@ app.get('/songs/genre/:genreName', async (req, res) => {
 });
 
 //Get ARTIST by Name
-app.get('/songs/artist/:artistName', async (req, res) => {
+app.get('/songs/artist/:artistName', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Songs.findOne({'Artist.Name': req.params.artistName})
         .then((song) => {
             res.status(200).json(song.Artist);
@@ -125,7 +128,10 @@ app.post('/users', async (req, res) => {
 });
 
 //Update a User's Info
-app.put('/users/:Username', async (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if(req.user.Username !== req.params.Username){
+        return res.status(400).send('Permission Denied.');
+    }
     await Users.findOneAndUpdate({Username: req.params.Username}, { 
         $set: 
             {
@@ -146,7 +152,10 @@ app.put('/users/:Username', async (req, res) => {
 });
 
 //Add a Song to a User's Favorites
-app.post('/users/:Username/songs/:SongID', async (req, res) => {
+app.post('/users/:Username/songs/:SongID', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if(req.user.Username !== req.params.Username){
+        return res.status(400).send('Permission Denied.');
+    }
     await Users.findOneAndUpdate({Username: req.params.Username}, {
         $push: {Favorites: req.params.SongID}
     },
@@ -161,7 +170,10 @@ app.post('/users/:Username/songs/:SongID', async (req, res) => {
 });
 
 //Remove a Song from a User's Favorites
-app.delete('/users/:Username/songs/:SongID', async (req, res) => {
+app.delete('/users/:Username/songs/:SongID', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if(req.user.Username !== req.params.Username){
+        return res.status(400).send('Permission Denied.');
+    }
     await Users.findOneAndUpdate({Username: req.params.Username}, {
         $pull: {Favorites: req.params.SongID}
     }, 
@@ -176,7 +188,10 @@ app.delete('/users/:Username/songs/:SongID', async (req, res) => {
 });
 
 //Remove a User from the Database
-app.delete('/users/:Username', async (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    if(req.user.Username !== req.params.Username){
+        return res.status(400).send('Permission Denied.');
+    }
     await Users.findOneAndDelete({Username: req.params.Username})
         .then ((user) => {
             if(!user){

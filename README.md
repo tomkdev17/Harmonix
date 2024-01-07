@@ -1,13 +1,10 @@
-# FlixTrix
+# HarmONics
 
-This project is my first foray into backend programming!
+HarmONics is an API that allows Users to be able to interface with a small musical database created with MongoDB. The User can request information about songs, artists, and genres, as well as add their favorite songs to their own list! There's even potential in the future for Users to be able to submit their own entries to the database, which could be a gamechanger for local music scenes. 
 
-The basic goals of the project at this point are to create a server/API that will allow users to get information about everything relating to film. 
-This could include films, directors, actors, genres, and other information. 
-The users should then be able to store their favorite information in an account that they can manage through the application. 
+With all this being said, this API uses the MERN stack modeled with Mongoose in order to process HTTP requests and deliver information about music. The supported HTTP requests can be found in the documentation file.  
 
-Later on, I'll be building the application itself (The best movie application ever made, probably) and it will be my first ever project that can stand alone.
+  P.S. - This is my first project doing any backend development
 
-I'm excited to see what I can do, and share it with all of you!
+-tomkdev17
 
-This project will be created using Node.js and employ REST architecture, MongoDB and Heroku for modeling and deployment. 

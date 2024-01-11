@@ -6,10 +6,11 @@ uuid = require('uuid'),
 mongoose = require('mongoose'),
 bodyParser = require('body-parser'),
 Models = require('./models.js'),
+cors = require('cors'),
 Songs = Models.Song,
 Users = Models.User
 ;
-
+const {check, validationResult} = require('express-validator');
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/CFdbHarmonicks', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -22,11 +23,22 @@ app.use(express.json());
 app.use(bodyParser.urlencoded ({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('combined', {stream: accessLogStream}));
+
+let allowedOrigins = ['http://localhost8080', 'http://testing123.com'];
+app.use(cors({
+    origin: (origin, callback) => {
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            let message = "The CORS policy of this application doesn't allow access from origin " + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
+
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
-
-const jsonParse = bodyParser.json() 
 
 //Get all Users
 app.get('/users', passport.authenticate('jwt', {session: false}), async (req, res) => {
@@ -101,7 +113,21 @@ app.get('/songs/artist/:artistName', passport.authenticate('jwt', {session: fals
 });
 
 //Create New User
-app.post('/users', async (req, res) => {
+app.post('/users', 
+    [
+        check('Username', 'Username must be at least 5 characters.').isLength({min: 5}),
+        check('Username', 'Username must be alphanumeric.').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(),
+        check('Email', 'Email does not appear to be valid').isEmail()
+    ],
+async (req, res) => {
+
+    let errrors = validationResult(req);
+
+    if (!errrors.isEmpty()){
+        return res.status(422).json({errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({Username: req.body.Username})
         .then((user) => {
             if(user) {
@@ -110,7 +136,7 @@ app.post('/users', async (req, res) => {
                 Users
                     .create({
                             Username: req.body.Username, 
-                            Password: req.body.Password, 
+                            Password: hashedPassword, 
                             Email: req.body.Email, 
                             Birthday: req.body.Birthday
                         })
@@ -128,7 +154,20 @@ app.post('/users', async (req, res) => {
 });
 
 //Update a User's Info
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}),
+[
+    check('Username', 'Username must be at least 5 characters.').isLength({min: 5}),
+    check('Username', 'Username must be alphanumeric.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+],
+async (req, res) => {
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array() });
+    }
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission Denied.');
     }
@@ -215,6 +254,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Oops, something broke!');
 });
 
-app.listen(8080, () => {
-    console.log('This app is listening on port 8080');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on port ' + port);
 });

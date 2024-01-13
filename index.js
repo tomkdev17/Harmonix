@@ -248,7 +248,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), a
 });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to Harmonicks, where you can keep track of your favorite tunes!');
+    res.send('Welcome to Harmonix, where you can keep track of your favorite tunes!');
 });
 
 app.use((err, req, res, next) => {

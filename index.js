@@ -25,21 +25,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded ({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('combined', {stream: accessLogStream}));
+app.use(cors());
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
-
-let allowedOrigins = ['http://localhost8080', 'http://testing123.com'];
-app.use(cors({
-    origin: (origin, callback) => {
-        if(!origin) return callback(null, true);
-        if(allowedOrigins.indexOf(origin) === -1){
-            let message = "The CORS policy of this application doesn't allow access from origin " + origin;
-            return callback(new Error(message), false);
-        }
-        return callback(null, true);
-    }
-}));
 
 //Get all Users
 app.get('/users', passport.authenticate('jwt', {session: false}), async (req, res) => {

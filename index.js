@@ -13,7 +13,7 @@ Users = Models.User
 const {check, validationResult} = require('express-validator');
 const app = express();
 
-//mongoose.connect('mongodb://localhost:27017/CFdbHarmonicks', {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://localhost:27017/CFdbHarmonicks', {useNewUrlParser: true, useUnifiedTopology: true});
 
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -25,6 +25,9 @@ app.use(express.json());
 app.use(bodyParser.urlencoded ({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('combined', {stream: accessLogStream}));
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 let allowedOrigins = ['http://localhost8080', 'http://testing123.com'];
 app.use(cors({
@@ -37,10 +40,6 @@ app.use(cors({
         return callback(null, true);
     }
 }));
-
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
 
 //Get all Users
 app.get('/users', passport.authenticate('jwt', {session: false}), async (req, res) => {

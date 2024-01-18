@@ -29,7 +29,7 @@ userSchema.statics.hashPassword = (password) => {
 };
 
 userSchema.methods.validatePassword = function(password) {
-    return bcrypt.compareSync(password, this.Passsword);
+    return bcrypt.compareSync(password, this.Password);
 };
 
 let Song = mongoose.model('Song', songSchema);

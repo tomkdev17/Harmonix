@@ -13,9 +13,9 @@ Users = Models.User
 const {check, validationResult} = require('express-validator');
 const app = express();
 
-// mongoose.connect('mongodb://127.0.0.1:27017/CFdbHarmonicks', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://127.0.0.1:27017/CFdbHarmonicks', {useNewUrlParser: true, useUnifiedTopology: true});
 
-mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
@@ -155,6 +155,8 @@ async (req, res) => {
 
     let errors = validationResult(req);
 
+    let hashedPassword = Users.hashPassword(req.body.Password)
+
     if (!errors.isEmpty()){
         return res.status(422).json({errors: errors.array() });
     }
@@ -165,7 +167,7 @@ async (req, res) => {
         $set: 
             {
                 Username: req.body.Username,
-                Password: req.body.hashedPassword,
+                Password: hashedPassword,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
             }        

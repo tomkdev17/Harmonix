@@ -30,6 +30,20 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
+
+let allowedOrigins = [ 'https://harmonix-daebd0a88259.herokuapp.com/', 'http://localhost:8080'];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if(!origin) return  callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            let message = "The CORS policy of this application does not allow access from origin: " + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
+
 //Get all Users
 app.get('/users', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Users.find()
@@ -187,6 +201,11 @@ app.post('/users/:Username/songs/:SongID', passport.authenticate('jwt', {session
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission Denied.');
     }
+    const existingFavorite = await Users.findOne({Favorites: req.params.SongID});
+    if(existingFavorite){
+        return res.status(400).send('This song is already on your Favorites List!');
+    }
+
     await Users.findOneAndUpdate({Username: req.params.Username}, {
         $push: {Favorites: req.params.SongID}
     },
@@ -238,13 +257,12 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), a
 });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to Harmonix, where you can keep track of your favorite tunes!');
+    res.send('Welcome to Harmonix, where you can keep track of your favorite tunes! You can find the documentation for this API at https://harmonix-daebd0a88259.herokuapp.com/documentation');
 });
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Oops, something broke!');
-});
+app.get('/documentation', (req, res) =>{
+    res.sendFile(__dirname +'/public/documentation.html');
+})
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

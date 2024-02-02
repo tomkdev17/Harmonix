@@ -153,3 +153,6 @@ URL: /
 ::1 - - [26/Jan/2024:10:12:26 +0000] "PUT /users/test6 HTTP/1.1" 401 - "-" "PostmanRuntime/7.35.0"
 ::1 - - [26/Jan/2024:10:12:34 +0000] "PUT /users/test6 HTTP/1.1" 200 240 "-" "PostmanRuntime/7.35.0"
 ::1 - - [26/Jan/2024:10:13:01 +0000] "POST /login?Username=test6&Password=supersecretpass HTTP/1.1" 200 476 "-" "PostmanRuntime/7.35.0"
+::1 - - [31/Jan/2024:21:28:17 +0000] "POST /users/test7 HTTP/1.1" 404 151 "-" "PostmanRuntime/7.35.0"
+::1 - - [31/Jan/2024:21:29:59 +0000] "POST /users/test7 HTTP/1.1" 404 151 "-" "PostmanRuntime/7.35.0"
+::1 - - [31/Jan/2024:21:30:14 +0000] "POST /users/ HTTP/1.1" 422 379 "-" "PostmanRuntime/7.35.0"

@@ -15,6 +15,8 @@ const app = express();
 
 // mongoose.connect('mongodb://127.0.0.1:27017/CFdbHarmonicks', {useNewUrlParser: true, useUnifiedTopology: true});
 
+// mongoose.connect('mongodb+srv://thomaskelliher29:ws6yKMRDwYQ1UBWX@careerfoundrycluster.yamwip1.mongodb.net/CFdbHarmonicks?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
+
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
@@ -125,10 +127,8 @@ app.post('/users',
         check('Email', 'Email does not appear to be valid').isEmail()
     ],
 async (req, res) => {
-
-    let errrors = validationResult(req);
-
-    if (!errrors.isEmpty()){
+    let errors = validationResult(req);
+    if (!errors.isEmpty()){
         return res.status(422).json({errors: errors.array() });
     }
     let hashedPassword = Users.hashPassword(req.body.Password);

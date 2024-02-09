@@ -71,7 +71,7 @@ app.get('/users/:Username', passport.authenticate('jwt', {session:false}), async
 });
 
 //Get ALL SONGS
-app.get('/songs', async (req, res) => {
+app.get('/songs', passport.authenticate('jwt', {session:false}), async (req, res) => {
     await Songs.find()
         .then((songs) => {
             res.status(200).json(songs);

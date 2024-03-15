@@ -201,7 +201,12 @@ app.post('/users/:Username/songs/:SongID', passport.authenticate('jwt', {session
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission Denied.');
     }
-    const existingFavorite = await Users.findOne({Favorites: req.params.SongID});
+
+    const existingFavorite = await Users.findOne({
+        Username: req.params.Username, 
+        Favorites: req.params.SongID 
+    });
+
     if(existingFavorite){
         return res.status(400).send('This song is already on your Favorites List!');
     }

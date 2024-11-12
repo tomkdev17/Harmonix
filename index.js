@@ -33,7 +33,7 @@ const passport = require('passport');
 require('./passport');
 
 
-let allowedOrigins = [ 'https://harmonix-daebd0a88259.herokuapp.com/', 'http://localhost:8080', 'http://localhost:1234', 'https://harmonix-db.netlify.app'];
+let allowedOrigins = [ 'https://harmonix-daebd0a88259.herokuapp.com/', 'http://localhost:8080', 'http://localhost:1234', 'https://harmonix-db.netlify.app', 'http://localhost:4200'];
 
 app.use(cors({
     origin: (origin, callback) => {

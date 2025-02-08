@@ -33,7 +33,9 @@ const passport = require('passport');
 require('./passport');
 
 
-let allowedOrigins = [ 'https://harmonix-daebd0a88259.herokuapp.com/', 'http://localhost:8080', 'http://localhost:1234', 'https://harmonix-db.netlify.app', 'http://localhost:4200', 'https://tomkdev17.github.io/harmonix-Angular-Client' ];
+let allowedOrigins = [ 'https://harmonix-daebd0a88259.herokuapp.com/', 'http://localhost:8080', 'http://localhost:1234', 'https://harmonix-db.netlify.app', 'http://localhost:4200', 'https://tomkdev17.github.io/harmonix-Angular-Client', 'https://tomkdev17.github.io/harmonix-Angular-Client/' ];
+
+// lets add a comment to see if it thinks it's up to date 
 
 app.use(cors({
     origin: (origin, callback) => {
